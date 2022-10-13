@@ -39,31 +39,31 @@ const DUMMY_EXPENSES = [
     id: "e6",
     description: "tomatoes",
     amount: 5.99,
-    date: new Date("2022-10-3"),
+    date: new Date("2022-10-03"),
   },
   {
     id: "e7",
     description: "blander",
     amount: 10.99,
-    date: new Date("2022-10-6"),
+    date: new Date("2022-10-06"),
   },
   {
     id: "e8",
     description: "tea",
     amount: 6.99,
-    date: new Date("2022-9-10"),
+    date: new Date("2022-09-10"),
   },
   {
     id: "e9",
     description: "Mayonaise",
     amount: 12,
-    date: new Date("2022-8-10"),
+    date: new Date("2022-08-10"),
   },
   {
     id: "e10",
     description: "Rice for cooking",
     amount: 20.99,
-    date: new Date("2022-10-1"),
+    date: new Date("2022-10-01"),
   },
 ];
 
@@ -81,7 +81,9 @@ export default ExpensesOutput;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.primary700,
   },
 });
