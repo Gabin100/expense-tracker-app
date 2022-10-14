@@ -7,7 +7,7 @@ function ErrorOverlay({ message, onComfirm }) {
     <View style={styles.container}>
       <Text style={[styles.text, styles.title]}>An Error occurred</Text>
       <Text style={styles.text}>{message}</Text>
-      <Button onPress={onComfirm}>Okey</Button>
+      <Button onPress={onComfirm}>Reload</Button>
     </View>
   );
 }
