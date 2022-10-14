@@ -2,6 +2,7 @@ import { useContext, useLayoutEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 import IconButton from "../components/UI/IconButton";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import { GlobalStyles } from "../constants/styles";
@@ -10,6 +11,7 @@ import { deleteExpense, storeExpense, updateExpense } from "../util/http";
 
 function ManageExpense({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const expensesCtx = useContext(ExpensesContext);
 
   const expenseId = route.params?.expenseId;
@@ -27,9 +29,14 @@ function ManageExpense({ route, navigation }) {
 
   async function deleteExpenseHandler() {
     setIsLoading(true);
-    await deleteExpense(expenseId);
-    expensesCtx.deleteExpense(expenseId);
-    navigation.goBack();
+    try {
+      await deleteExpense(expenseId);
+      expensesCtx.deleteExpense(expenseId);
+      navigation.goBack();
+    } catch (error) {
+      setError(`Could not delete expense, please try again later!`);
+    }
+    setIsLoading(false);
   }
 
   function cancelHandler() {
@@ -38,14 +45,29 @@ function ManageExpense({ route, navigation }) {
 
   async function comfirmHandler(expenseData) {
     setIsLoading(true);
-    if (isEditing) {
-      await updateExpense(expenseId, expenseData);
-      expensesCtx.updateExpense(expenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expensesCtx.addExpense({ ...expenseData, id });
+    const action = isEditing ? "Update" : "Add";
+    try {
+      if (isEditing) {
+        await updateExpense(expenseId, expenseData);
+        expensesCtx.updateExpense(expenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expensesCtx.addExpense({ ...expenseData, id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError(`Could not ${action} expense, please try again later!`);
     }
+    setIsLoading(false);
+  }
+
+  function errorHandler() {
+    setError(null);
     navigation.goBack();
+  }
+
+  if (error && !isLoading) {
+    return <ErrorOverlay message={error} onComfirm={errorHandler} />;
   }
 
   if (isLoading) {
