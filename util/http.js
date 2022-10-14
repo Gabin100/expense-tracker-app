@@ -26,3 +26,16 @@ export async function fetchExpenses() {
   }
   return expenses;
 }
+
+export async function updateExpense(id, expenseData) {
+  const response = await axios.put(
+    `${BACKEND_URL}/expenses/${id}.json`,
+    expenseData
+  );
+  return response.data;
+}
+
+export async function deleteExpense(id) {
+  const response = await axios.delete(`${BACKEND_URL}/expenses/${id}.json`);
+  return response.data;
+}
