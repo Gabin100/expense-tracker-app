@@ -32,12 +32,12 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack();
   }
 
-  function comfirmHandler(expenseData) {
+  async function comfirmHandler(expenseData) {
     if (isEditing) {
       expensesCtx.updateExpense(expenseId, expenseData);
     } else {
-      storeExpense(expenseData);
-      expensesCtx.addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id });
     }
     navigation.goBack();
   }
